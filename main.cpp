@@ -1,40 +1,114 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <unordered_map>
+#include <stdexcept>
 
 class User
 {
-    public:
-    User(const std::string& username, const std::string& password, const std::string& name) : username(username), password(password),
-    name(name) {}
+public:
+    User(const std::string& username, const std::string& password, const std::string& name)
+        : username(username), password(password), name(name) {}
 
     std::string getUsername() const { return username; }
     std::string getPassword() const { return password; }
     std::string getName() const { return name; }
 
-    private:
+private:
     std::string username;
     std::string password;
     std::string name;
 };
 
-class Message 
-{   
-    public:
-    Message(const std::string& sender, const std::string& receiver, const std::string& text) : sender(sender), receiver(receiver),
-    text(text) {}
-    
+class Message
+{
+public:
+    Message(const std::string& sender, const std::string& receiver, const std::string& text)
+        : sender(sender), receiver(receiver), text(text) {}
+
     std::string getSender() const { return sender; }
     std::string getReceiver() const { return receiver; }
     std::string getText() const { return text; }
-   
-    private:
+
+private:
     std::string sender;
     std::string receiver;
     std::string text;
-
 };
 
 class Chat
 {
+public:
+    void registerUser(const std::string& username, const std::string& password, const std::string& name)
+    {
+        if (users.find(username) != users.end())
+        {
+            throw std::runtime_error("User already exists");
+        }
 
+        users[username] = User(username, password, name);
+    }
+
+    void loginUser(const std::string& username, const std::string& password)
+    {
+        if (users.find(username) == users.end() || users[username].getPassword() != password)
+        {
+            throw std::runtime_error("Invalid username or password");
+        }
+
+        currentUser = username;
+        std::cout << "Logged in as " << username << std::endl;
+    }
+
+    void logoutUser()
+    {
+        if (currentUser.empty())
+        {
+            throw std::runtime_error("No user is logged in");
+        }
+        std::cout << "Logged out from " << currentUser << std::endl;
+        currentUser.clear();
+    }
+
+    void sendMessage(const std::string& receiver, const std::string& text)
+    {
+        if (currentUser.empty())
+        {
+            throw std::runtime_error("User not logged in");
+        }
+        messages.push_back(Message(currentUser, receiver, text));
+    }
+
+    void showMessages() const
+    {
+        if (currentUser.empty())
+        {
+            throw std::runtime_error("No user is logged in");
+        }
+
+        bool hasMessages = false;
+        for (const auto& message : messages)
+        {
+            if (message.getReceiver() == currentUser)
+            {
+                std::cout << message.getSender() << " to " << message.getReceiver() << ": " << message.getText() << std::endl;
+                hasMessages = true;
+            }
+        }
+
+        if (!hasMessages)
+        {
+            std::cout << "No new messages." << std::endl;
+        }
+    }
+
+    bool isUserLoggedIn() const
+    {
+        return !currentUser.empty();
+    }
+
+private:
+    std::unordered_map<std::string, User> users;
+    std::vector<Message> messages;
+    std::string currentUser;
 };
