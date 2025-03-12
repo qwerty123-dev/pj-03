@@ -7,7 +7,7 @@
 class User
 {
 public:
-    User() : username(""), password(""), name("") {} // Конструктор по умолчанию
+    User() : username(""), password(""), name("") {}
 
     User(const std::string& username, const std::string& password, const std::string& name)
         : username(username), password(password), name(name) {}
@@ -25,7 +25,7 @@ private:
 class Message
 {
 public:
-    Message() : sender(""), receiver(""), text("") {} // Конструктор по умолчанию
+    Message() : sender(""), receiver(""), text("") {} 
 
     Message(const std::string& sender, const std::string& receiver, const std::string& text)
         : sender(sender), receiver(receiver), text(text) {}
@@ -43,7 +43,7 @@ private:
 class Chat
 {
 public:
-    Chat() : currentUser("") {} // Конструктор по умолчанию
+    Chat() : currentUser("") {}
 
     void registerUser(const std::string& username, const std::string& password, const std::string& name)
     {
@@ -83,7 +83,7 @@ public:
             throw std::runtime_error("User not logged in");
         }
 
-        if (users.find(receiver) == users.end())  // Validate the receiver exists
+        if (users.find(receiver) == users.end()) 
         {
             throw std::runtime_error("Receiver not found");
         }
@@ -190,7 +190,7 @@ int main()
                     std::cout << "Enter recipient username: ";
                     std::cin >> receiver;
                     std::cout << "Enter message: ";
-                    std::cin.ignore();  // Clear any leftover newline
+                    std::cin.ignore();
                     std::getline(std::cin, message);
 
                     chat.sendMessage(receiver, message);
