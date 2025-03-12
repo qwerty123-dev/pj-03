@@ -39,7 +39,6 @@ private:
     std::string receiver;
     std::string text;
 };
-
 class Chat
 {
 public:
@@ -65,7 +64,6 @@ public:
         currentUser = username;
         std::cout << "Logged in as " << username << std::endl;
     }
-
     void logoutUser()
     {
         if (currentUser.empty())
@@ -124,13 +122,11 @@ private:
     std::vector<Message> messages;
     std::string currentUser;
 };
-
 int main()
 {
     Chat chat;
     std::string username, password, name;
     int option;
-
     try
     {
         while (true)
@@ -150,7 +146,6 @@ int main()
                 std::cout << "2. Login\n";
                 std::cout << "3. Exit\n";
             }
-
             std::cout << "Choose an option: ";
             std::cin >> option;
 
@@ -223,6 +218,5 @@ int main()
     {
         std::cerr << e.what() << std::endl;
     }
-
     return 0;
 }
