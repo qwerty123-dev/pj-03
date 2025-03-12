@@ -18,7 +18,19 @@ class User
 };
 
 class Message 
-{
+{   
+    public:
+    Message(const std::string& sender, const std::string& receiver, const std::string& text) : sender(sender), receiver(receiver),
+    text(text) {}
+    
+    std::string getSender() const { return sender; }
+    std::string getReceiver() const { return receiver; }
+    std::string getText() const { return text; }
+   
+    private:
+    std::string sender;
+    std::string receiver;
+    std::string text;
 
 };
 
