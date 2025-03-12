@@ -7,6 +7,8 @@
 class User
 {
 public:
+    User() : username(""), password(""), name("") {} // Конструктор по умолчанию
+
     User(const std::string& username, const std::string& password, const std::string& name)
         : username(username), password(password), name(name) {}
 
@@ -23,6 +25,8 @@ private:
 class Message
 {
 public:
+    Message() : sender(""), receiver(""), text("") {} // Конструктор по умолчанию
+
     Message(const std::string& sender, const std::string& receiver, const std::string& text)
         : sender(sender), receiver(receiver), text(text) {}
 
@@ -39,6 +43,8 @@ private:
 class Chat
 {
 public:
+    Chat() : currentUser("") {} // Конструктор по умолчанию
+
     void registerUser(const std::string& username, const std::string& password, const std::string& name)
     {
         if (users.find(username) != users.end())
@@ -76,6 +82,12 @@ public:
         {
             throw std::runtime_error("User not logged in");
         }
+
+        if (users.find(receiver) == users.end())  // Validate the receiver exists
+        {
+            throw std::runtime_error("Receiver not found");
+        }
+
         messages.push_back(Message(currentUser, receiver, text));
     }
 
@@ -113,7 +125,6 @@ private:
     std::string currentUser;
 };
 
-
 int main()
 {
     Chat chat;
@@ -139,6 +150,7 @@ int main()
                 std::cout << "2. Login\n";
                 std::cout << "3. Exit\n";
             }
+
             std::cout << "Choose an option: ";
             std::cin >> option;
 
@@ -178,7 +190,7 @@ int main()
                     std::cout << "Enter recipient username: ";
                     std::cin >> receiver;
                     std::cout << "Enter message: ";
-                    std::cin.ignore();
+                    std::cin.ignore();  // Clear any leftover newline
                     std::getline(std::cin, message);
 
                     chat.sendMessage(receiver, message);
@@ -205,7 +217,6 @@ int main()
             {
                 std::cout << "Invalid option, please try again." << std::endl;
             }
-            
         }
     }
     catch(const std::exception& e)
@@ -214,6 +225,4 @@ int main()
     }
 
     return 0;
-    
-
 }
